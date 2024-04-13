@@ -58,11 +58,12 @@ namespace SeniorProject_Backend.Repositories
 
         public bool Register(User user)
         {
-            using (SqlConnection con = new SqlConnection(_connectionString))
-            {
-                SqlCommand cmd = new SqlCommand();
+            //using (SqlConnection con = new SqlConnection(_connectionString))
+            //{
+            //    SqlCommand cmd = new SqlCommand();
 
-            }
+            //}
+            return true;
         }
     }
 }
