@@ -5,5 +5,6 @@ namespace SeniorProject_Backend.Repositories
     public interface IUserRepository
     {
         User GetUser(string userName,string password);
+        bool Register(User user);
     }
 }

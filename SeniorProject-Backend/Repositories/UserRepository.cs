@@ -13,7 +13,7 @@ namespace SeniorProject_Backend.Repositories
         public UserRepository(IConfiguration configuration)
         {
             _configuration = configuration;
-            _connectionString = @"Data Source=DESKTOP-BUTN7E4;Initial Catalog=SeniorProjectDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+            _connectionString = @"Data Source=localhost\SQLEXPRESS;Initial Catalog=SeniorProject-DB;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
         }
 
         public User GetUser(string userName,string password)
@@ -56,6 +56,13 @@ namespace SeniorProject_Backend.Repositories
             }
         }
 
+        public bool Register(User user)
+        {
+            using (SqlConnection con = new SqlConnection(_connectionString))
+            {
+                SqlCommand cmd = new SqlCommand();
 
+            }
+        }
     }
 }

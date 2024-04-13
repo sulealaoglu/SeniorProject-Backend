@@ -71,7 +71,7 @@ namespace SeniorProject_Backend.Controllers
         //    return Ok(token);
         //}
         [HttpGet("getUser")]
-        public ActionResult<User> GetUser(string username,string password)
+        public ActionResult<User> Login(string username,string password)
         {
 
             var user= _userRepository.GetUser(username,password);
