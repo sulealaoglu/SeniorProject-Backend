@@ -71,18 +71,18 @@ namespace SeniorProject_Backend.Controllers
         //    return Ok(token);
         //}
         [HttpGet("getUser")]
-        public User GetUser(string username)
+        public ActionResult<User> GetUser(string username,string password)
         {
 
-            //if (!_authRepository.UserExists(email))
-            //{
-            //    return NotFound();
-            //}
+            var user= _userRepository.GetUser(username,password);
 
-            //var user = _mapper.Map<UserDto>(await _authRepository.GetUserByEmail(email));
-
-
-            return _userRepository.GetUser(username);
+            if(user == null)
+            {
+                return NotFound();
+            }
+            else { 
+                return Ok(user);
+            }
         }
 
         //[HttpGet("allUsers")]
