@@ -1,19 +1,16 @@
 ﻿using Microsoft.Data.SqlClient;
 using SeniorProject_Backend.Models;
-using System.Data;
-using System.Data.Common;
 
 namespace SeniorProject_Backend.Repositories
 {
     public class UserRepository:IUserRepository
     {
         private string _connectionString;
-        private readonly IConfiguration _configuration;
 
         public UserRepository(IConfiguration configuration)
         {
-            _configuration = configuration;
-            _connectionString = @"Data Source=localhost\SQLEXPRESS;Initial Catalog=SeniorProject-DB;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+            //_connectionString = @"Data Source=localhost\SQLEXPRESS;Initial Catalog=SeniorProject-DB;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+            _connectionString = @"Data Source=DESKTOP-BUTN7E4;Initial Catalog=SeniorProjectDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
         }
 
         public User GetUser(string userName,string password)
@@ -45,7 +42,7 @@ namespace SeniorProject_Backend.Repositories
                             Income = Convert.ToInt32(reader["income"]),
                             HasSickness = reader["has_sickness"].ToString(),
                             IsUsingMedicine = reader["is_using_medicine"].ToString(),
-                            ProgressLevel = reader["progress_level"].ToString()
+                            ProgressLevel = Convert.ToInt32(reader["progress_level"])
                         };
                     }
                     else
@@ -55,15 +52,80 @@ namespace SeniorProject_Backend.Repositories
                 }
             }
         }
-
         public bool Register(User user)
         {
-            //using (SqlConnection con = new SqlConnection(_connectionString))
-            //{
-            //    SqlCommand cmd = new SqlCommand();
+            string query = @"INSERT INTO [dbo].[users]
+                        ([user_name]
+                        ,[e_mail]
+                        ,[cell_phone]
+                        ,[user_password]
+                        ,[first_name]
+                        ,[last_name]
+                        ,[gender]
+                        ,[age]
+                        ,[major]
+                        ,[study_year]
+                        ,[city]
+                        ,[income]
+                        ,[has_sickness]
+                        ,[is_using_medicine]
+                        ,[progress_level])
+                    VALUES
+                        (@UserName
+                        ,@Email
+                        ,@CellPhone
+                        ,@UserPassword
+                        ,@FirstName
+                        ,@LastName
+                        ,@Gender
+                        ,@Age
+                        ,@Major
+                        ,@StudyYear
+                        ,@City
+                        ,@Income
+                        ,@HasSickness
+                        ,@IsUsingMedicine
+                        ,@ProgressLevel)";
 
-            //}
-            return true;
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@UserName", user.UserName);
+                command.Parameters.AddWithValue("@Email", user.Email);
+                command.Parameters.AddWithValue("@CellPhone", user.CellPhone);
+                command.Parameters.AddWithValue("@UserPassword", user.UserPassword);
+                command.Parameters.AddWithValue("@FirstName", user.FirstName);
+                command.Parameters.AddWithValue("@LastName", user.LastName);
+                command.Parameters.AddWithValue("@Gender", user.Gender);
+                command.Parameters.AddWithValue("@Age", user.Age);
+                command.Parameters.AddWithValue("@Major", user.Major);
+                command.Parameters.AddWithValue("@StudyYear", user.StudyYear);
+                command.Parameters.AddWithValue("@City", user.City);
+                command.Parameters.AddWithValue("@Income", user.Income);
+                command.Parameters.AddWithValue("@HasSickness", user.HasSickness);
+                command.Parameters.AddWithValue("@IsUsingMedicine", user.IsUsingMedicine);
+                command.Parameters.AddWithValue("@ProgressLevel", user.ProgressLevel);
+
+                connection.Open();
+                int rowsAffected = command.ExecuteNonQuery();
+                return rowsAffected > 0;
+            }
+        }
+
+        public bool UserExist(string userName)
+        {
+            string query = "SELECT COUNT(*) FROM [dbo].[users] WHERE [user_name] = @UserName";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@UserName", userName);
+                connection.Open();
+
+                int count = (int)command.ExecuteScalar();
+                return count > 0;
+            }
+
         }
     }
 }

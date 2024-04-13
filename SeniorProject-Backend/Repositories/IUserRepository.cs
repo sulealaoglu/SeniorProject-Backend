@@ -6,5 +6,6 @@ namespace SeniorProject_Backend.Repositories
     {
         User GetUser(string userName,string password);
         bool Register(User user);
+        bool UserExist(string userName);
     }
 }

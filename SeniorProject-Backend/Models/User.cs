@@ -16,7 +16,6 @@
         public int Income { get; set; }
         public string HasSickness { get; set; }
         public string IsUsingMedicine { get; set; }
-
-        public string ProgressLevel { get; set; }
+        public int ProgressLevel { get; set; }
     }
 }
